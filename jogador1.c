@@ -13,7 +13,7 @@ int main() {
     Mapa meu_mapa, mapa_inimigo;
     inicializar_mapa(&meu_mapa);
     inicializar_mapa(&mapa_inimigo);
-    colocar_navios_exemplo(&meu_mapa);
+    colocar_navios_interativamente(&meu_mapa);
 
     mkfifo(FIFO1, 0666);
     mkfifo(FIFO2, 0666);

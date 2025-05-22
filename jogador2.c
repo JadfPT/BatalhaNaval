@@ -13,7 +13,8 @@ int main() {
     Mapa meu_mapa, mapa_inimigo;
     inicializar_mapa(&meu_mapa);
     inicializar_mapa(&mapa_inimigo);
-    colocar_navios_exemplo(&meu_mapa);
+    colocar_navios_interativamente(&meu_mapa);
+
 
     char jogada[10], resposta[10];
     int fd_envia, fd_recebe;

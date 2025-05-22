@@ -20,5 +20,4 @@ jogador2: jogador2.o $(OBJS)
 	$(CC) -o jogador2 jogador2.o $(OBJS)
 
 clean limpar:
-	rm -f jogador1 jogador2 *.o *~
-	echo "Limpeza concluída."
+	rm -f jogador1 jogador2 *.o fifo1to2 fifo2to1

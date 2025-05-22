@@ -25,14 +25,31 @@ void mostrar_mapa(Mapa *mapa, const char *titulo) {
         printf("\n");
     }
 }
+void colocar_navios_interativamente(Mapa *mapa) {
+    int total_navios = 3;
+    char input[10];
+    int linha, coluna;
 
-void colocar_navios_exemplo(Mapa *mapa) {
-    // Exemplo: coloca 3 navios em posições fixas
-    mapa->grelha[0][0] = 'N';
-    mapa->grelha[0][1] = 'N';
-    mapa->grelha[0][2] = 'N';
-    mapa->grelha[5][5] = 'N';
-    mapa->grelha[9][10] = 'N';
+    printf("\n--- Colocação de %d navios (1 célula cada) ---\n", total_navios);
+
+    for (int i = 0; i < total_navios; ) {
+        printf("Posição do navio %d (ex: B5): ", i + 1);
+        fgets(input, sizeof(input), stdin);
+        input[strcspn(input, "\n")] = '\0';
+
+        if (!coordenada_para_indices(input, &linha, &coluna)) {
+            printf("Coordenada inválida. Tenta novamente.\n");
+            continue;
+        }
+
+        if (mapa->grelha[linha][coluna] == 'N') {
+            printf("Já existe um navio nessa posição!\n");
+            continue;
+        }
+
+        mapa->grelha[linha][coluna] = 'N';
+        i++;
+    }
 }
 
 int coordenada_valida(const char *coord) {

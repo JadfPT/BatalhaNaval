@@ -1,14 +1,9 @@
-// mapas.c
 #include "mapas.h"
-#include <stdio.h>
-#include <string.h>
-#include <ctype.h>
-#include <stdlib.h>
 
 void inicializar_mapa(Mapa *mapa) {
     for (int i = 0; i < LINHAS; i++)
         for (int j = 0; j < COLUNAS; j++)
-            mapa->grelha[i][j] = '-'; // mar
+            mapa->grelha[i][j] = '-';
 }
 
 void mostrar_mapa(Mapa *mapa, const char *titulo) {
@@ -23,32 +18,6 @@ void mostrar_mapa(Mapa *mapa, const char *titulo) {
             printf(" %c ", mapa->grelha[i][j]);
         }
         printf("\n");
-    }
-}
-void colocar_navios_interativamente(Mapa *mapa) {
-    int total_navios = 3;
-    char input[10];
-    int linha, coluna;
-
-    printf("\n--- Colocação de %d navios (1 célula cada) ---\n", total_navios);
-
-    for (int i = 0; i < total_navios; ) {
-        printf("Posição do navio %d (ex: B5): ", i + 1);
-        fgets(input, sizeof(input), stdin);
-        input[strcspn(input, "\n")] = '\0';
-
-        if (!coordenada_para_indices(input, &linha, &coluna)) {
-            printf("Coordenada inválida. Tenta novamente.\n");
-            continue;
-        }
-
-        if (mapa->grelha[linha][coluna] == 'N') {
-            printf("Já existe um navio nessa posição!\n");
-            continue;
-        }
-
-        mapa->grelha[linha][coluna] = 'N';
-        i++;
     }
 }
 
@@ -69,6 +38,72 @@ int coordenada_para_indices(const char *coord, int *linha, int *coluna) {
     return 1;
 }
 
+int pode_colocar(Mapa *mapa, int linha, int coluna, int tamanho, char direcao) {
+    if (direcao == 'H') {
+        if (coluna + tamanho > COLUNAS) return 0;
+        for (int j = 0; j < tamanho; j++) {
+            if (mapa->grelha[linha][coluna + j] == 'N') return 0;
+        }
+    } else {
+        if (linha + tamanho > LINHAS) return 0;
+        for (int i = 0; i < tamanho; i++) {
+            if (mapa->grelha[linha + i][coluna] == 'N') return 0;
+        }
+    }
+    return 1;
+}
+
+void colocar_navios_interativamente(Mapa *mapa) {
+    int tamanhos[] = {4, 3, 3, 2, 2, 1};
+    int total_navios = sizeof(tamanhos) / sizeof(int);
+    char input[10], dir_input[10];
+    int linha, coluna;
+    char direcao;
+
+    printf("\n--- Colocação de navios ---\n");
+
+    for (int i = 0; i < total_navios; ) {
+        int tamanho = tamanhos[i];
+        mostrar_mapa(mapa, "Mapa Atual\n");        
+        printf("\nNavio de tamanho %d (%d/%d):\n", tamanho, i + 1, total_navios);
+        printf("  Posição inicial (ex: B5): ");
+        fgets(input, sizeof(input), stdin);
+        input[strcspn(input, "\n")] = '\0';
+
+        if (!coordenada_para_indices(input, &linha, &coluna)) {
+            printf("  Coordenada inválida. Tente novamente.\n");
+            continue;
+        }
+
+        if (tamanho > 1) {
+            printf("  Direção (H para horizontal, V para vertical): ");
+            fgets(dir_input, sizeof(dir_input), stdin);
+            direcao = toupper(dir_input[0]);
+            if (direcao != 'H' && direcao != 'V') {
+                printf("  Direção inválida.\n");
+                continue;
+            }
+        } else {
+            direcao = 'H'; // direção irrelevante para navio de 1 célula
+        }
+
+        if (!pode_colocar(mapa, linha, coluna, tamanho, direcao)) {
+            printf("  Não é possível colocar o navio nessa posição.\n");
+            continue;
+        }
+
+        // Colocar o navio
+        if (direcao == 'H') {
+            for (int j = 0; j < tamanho; j++)
+                mapa->grelha[linha][coluna + j] = 'N';
+        } else {
+            for (int j = 0; j < tamanho; j++)
+                mapa->grelha[linha + j][coluna] = 'N';
+        }
+
+        i++;
+    }
+}
 
 void aplicar_jogada(Mapa *mapa, const char *coord, char resultado) {
     int linha = toupper(coord[0]) - 'A';

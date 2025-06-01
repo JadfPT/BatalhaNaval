@@ -1,6 +1,3 @@
-#ifndef MAPAS_H
-#define MAPAS_H
-
 // --- Includes Globais ---
 #include <stdio.h>
 #include <stdlib.h>
@@ -30,4 +27,3 @@ int coordenada_para_indices(const char *coord, int *linha, int *coluna);
 void aplicar_jogada(Mapa *mapa, const char *coord, char resultado);
 int verificar_derrota(Mapa *mapa);
 
-#endif // MAPAS_H

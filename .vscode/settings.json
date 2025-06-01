@@ -1,6 +1,8 @@
 {
     "files.associations": {
         "mapas.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "stat.h": "c",
+        "string.h": "c"
     }
 }

@@ -8,8 +8,8 @@
 #include <sys/stat.h>
 
 // --- Constantes de Jogo ---
-#define LINHAS 16  // Linhas A-P
-#define COLUNAS 15 // Colunas 1-15
+#define LINHAS 11  // Linhas A-P
+#define COLUNAS 10 // Colunas 1-15
 #define FIFO1 "fifo1to2"
 #define FIFO2 "fifo2to1"
 

@@ -26,7 +26,7 @@ int coordenada_valida(const char *coord) {
         return 0;
     char letra = toupper(coord[0]);
     int numero = atoi(coord + 1);
-    return (letra >= 'A' && letra <= 'P' && numero >= 1 && numero <= 15);
+    return (letra >= 'A' && letra <= 'K' && numero >= 1 && numero <= 10);
 }
 
 int coordenada_para_indices(const char *coord, int *linha, int *coluna) {
